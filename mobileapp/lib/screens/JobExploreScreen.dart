@@ -29,7 +29,7 @@ class _JobExploreScreenState extends State<JobExploreScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 4), () {
+    Future.delayed(Duration(seconds: 20), () {
       _loadData();
       setState(() => _isLoading = false);
     });
@@ -546,8 +546,7 @@ class _JobExploreScreenState extends State<JobExploreScreen> {
             children: [
               _buildNavItem(Icons.explore, 'Explore', 0),
               _buildNavItem(Icons.work_outline, 'My Jobs', 1),
-              _buildNavItem(Icons.message_outlined, 'Message', 2),
-              _buildNavItem(Icons.person_outline, 'Profile', 3),
+              _buildNavItem(Icons.person_outline, 'Profile', 2),
             ],
           ),
         ),
@@ -568,7 +567,6 @@ class _JobExploreScreenState extends State<JobExploreScreen> {
           setState(() {
             _selectedNavIndex = index;
           });
-          // Removed SnackBar message
         }
       },
       borderRadius: BorderRadius.circular(12),
