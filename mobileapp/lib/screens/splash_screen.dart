@@ -13,6 +13,7 @@ class _SplashScreenState extends State<SplashScreen>
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
+  late Animation<double> _slideAnimation;
 
   @override
   void initState() {
@@ -20,8 +21,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     // Initialize animation controller
     _controller = AnimationController(
-      // ignore: prefer_const_constructors
-      duration: Duration(milliseconds: 1500),
+      duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
 
@@ -29,8 +29,7 @@ class _SplashScreenState extends State<SplashScreen>
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        // ignore: prefer_const_constructors
-        curve: Interval(0.0, 0.65, curve: Curves.easeIn),
+        curve: const Interval(0.0, 0.65, curve: Curves.easeIn),
       ),
     );
 
@@ -38,8 +37,15 @@ class _SplashScreenState extends State<SplashScreen>
     _scaleAnimation = Tween<double>(begin: 0.5, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        // ignore: prefer_const_constructors
-        curve: Interval(0.0, 0.65, curve: Curves.easeOutBack),
+        curve: const Interval(0.0, 0.65, curve: Curves.easeOutBack),
+      ),
+    );
+
+    // Slide animation for text
+    _slideAnimation = Tween<double>(begin: 30.0, end: 0.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.3, 1.0, curve: Curves.easeOut),
       ),
     );
 
@@ -47,15 +53,13 @@ class _SplashScreenState extends State<SplashScreen>
     _controller.forward();
 
     // Navigate to onboarding after 3 seconds
-    // ignore: prefer_const_constructors
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       if (mounted) {
         Navigator.pushReplacement(
           context,
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) =>
-                // ignore: prefer_const_constructors
-                OnboardingScreen(),
+                const OnboardingScreen(),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
               return FadeTransition(
@@ -63,8 +67,7 @@ class _SplashScreenState extends State<SplashScreen>
                 child: child,
               );
             },
-            // ignore: prefer_const_constructors
-            transitionDuration: Duration(milliseconds: 500),
+            transitionDuration: const Duration(milliseconds: 500),
           ),
         );
       }
@@ -80,127 +83,86 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // ignore: prefer_const_constructors
-      backgroundColor: Color(0xFF1976D2),
+      backgroundColor: Colors.white,
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFF1976D2),
-              Color(0xFF1565C0),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+        color: Colors.white,
         child: AnimatedBuilder(
           animation: _controller,
           builder: (context, child) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // ignore: prefer_const_constructors
-                Spacer(flex: 2),
-                // Animated logo container
+                const Spacer(flex: 2),
+
+                // Animated logo and text together
                 FadeTransition(
                   opacity: _fadeAnimation,
                   child: ScaleTransition(
                     scale: _scaleAnimation,
-                    child: Container(
-                      width: 140,
-                      height: 140,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 20,
-                            // ignore: prefer_const_constructors
-                            offset: Offset(0, 10),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Logo image
+                        SizedBox(
+                          width: 180,
+                          height: 180,
+                          child: Image.asset(
+                            'assets/mucho_logo.png',
+                            fit: BoxFit.contain,
                           ),
-                        ],
-                      ),
-                      child: Center(
-                        child: TweenAnimationBuilder<double>(
-                          tween: Tween(begin: 0.0, end: 1.0),
-                          // ignore: prefer_const_constructors
-                          duration: Duration(milliseconds: 800),
-                          curve: Curves.easeInOut,
-                          builder: (context, value, child) {
-                            return Transform.rotate(
-                              angle: value * 0.5,
-                              // ignore: prefer_const_constructors
-                              child: Icon(
-                                Icons.handyman,
-                                size: 70,
-                                // ignore: prefer_const_constructors
-                                color: Color(0xFF1976D2),
-                              ),
-                            );
-                          },
                         ),
-                      ),
+
+                        const SizedBox(height: 16),
+
+                        // App name - closer to logo
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Muco',
+                                style: TextStyle(
+                                  fontSize: 36,
+                                  fontWeight: FontWeight.w800,
+                                  color: Color(0xFF2D2D2D),
+                                  letterSpacing: 0.5,
+                                  fontFamily: 'Poppins',
+                                ),
+                              ),
+                              TextSpan(
+                                text: 'Connect',
+                                style: TextStyle(
+                                  fontSize: 36,
+                                  fontWeight: FontWeight.w300,
+                                  color: Color(0xFF666666),
+                                  letterSpacing: 0.5,
+                                  fontFamily: 'Poppins',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(height: 8),
+
+                        // Tagline
+                        Text(
+                          'Connecting Skills to Opportunities',
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.grey[500],
+                            letterSpacing: 0.8,
+                            fontFamily: 'Poppins',
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                // ignore: prefer_const_constructors
-                SizedBox(height: 30),
-                // Animated app name
-                FadeTransition(
-                  opacity: _fadeAnimation,
-                  child: SlideTransition(
-                    position: Tween<Offset>(
-                      // ignore: prefer_const_constructors
-                      begin: Offset(0, 0.3),
-                      end: Offset.zero,
-                    ).animate(CurvedAnimation(
-                      parent: _controller,
-                      // ignore: prefer_const_constructors
-                      curve: Interval(0.3, 1.0, curve: Curves.easeOut),
-                    )),
-                    // ignore: prefer_const_constructors
-                    child: Text(
-                      "MucoConnect",
-                      // ignore: prefer_const_constructors
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        letterSpacing: 1.2,
-                      ),
-                    ),
-                  ),
-                ),
-                // ignore: prefer_const_constructors
-                SizedBox(height: 12),
-                // Animated tagline
-                FadeTransition(
-                  opacity: _fadeAnimation,
-                  child: SlideTransition(
-                    position: Tween<Offset>(
-                      // ignore: prefer_const_constructors
-                      begin: Offset(0, 0.5),
-                      end: Offset.zero,
-                    ).animate(CurvedAnimation(
-                      parent: _controller,
-                      // ignore: prefer_const_constructors
-                      curve: Interval(0.5, 1.0, curve: Curves.easeOut),
-                    )),
-                    child: Text(
-                      "Connecting Skills to Opportunities",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white.withOpacity(0.9),
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                  ),
-                ),
-                // ignore: prefer_const_constructors
-                Spacer(flex: 2),
+
+                const Spacer(flex: 2),
               ],
             );
           },

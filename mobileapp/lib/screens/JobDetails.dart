@@ -55,30 +55,44 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
   Widget _buildHeader() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 8,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: Icon(Icons.arrow_back, color: Colors.black),
+            icon: Icon(Icons.arrow_back, color: Color(0xFF2D2D2D)),
           ),
           Text(
-            'Job Detail',
+            'Job Details',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
-              color: Colors.black,
+              color: Color(0xFF2D2D2D),
+              letterSpacing: 0.2,
             ),
           ),
           IconButton(
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Share functionality')),
+                SnackBar(
+                  content: Text('Share functionality'),
+                  backgroundColor: Color(0xFF666666),
+                ),
               );
             },
             icon: Icon(
               Icons.share_outlined,
-              color: Colors.black,
+              color: Color(0xFF2D2D2D),
             ),
           ),
         ],
@@ -96,19 +110,19 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
             children: [
               // Company Logo
               Container(
-                width: 48,
-                height: 48,
+                width: 56,
+                height: 56,
                 decoration: BoxDecoration(
-                  color: widget.job.logoColor.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(12),
+                  color: widget.job.logoColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(14),
                 ),
                 child: Icon(
                   widget.job.logoIcon,
                   color: widget.job.logoColor,
-                  size: 24,
+                  size: 28,
                 ),
               ),
-              SizedBox(width: 12),
+              SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,35 +131,41 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                       widget.job.title,
                       style: TextStyle(
                         fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF2D2D2D),
+                        letterSpacing: -0.5,
                       ),
                     ),
-                    SizedBox(height: 4),
+                    SizedBox(height: 6),
                     Row(
                       children: [
                         Text(
                           widget.job.companyName,
                           style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[600],
+                            fontSize: 13,
+                            color: Color(0xFF666666),
+                            letterSpacing: 0.2,
                           ),
                         ),
                         SizedBox(width: 8),
                         Container(
-                          width: 4,
-                          height: 4,
+                          width: 3,
+                          height: 3,
                           decoration: BoxDecoration(
-                            color: Colors.grey,
+                            color: Color(0xFF999999),
                             shape: BoxShape.circle,
                           ),
                         ),
                         SizedBox(width: 8),
-                        Text(
-                          widget.job.location,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[600],
+                        Flexible(
+                          child: Text(
+                            widget.job.location,
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: Color(0xFF666666),
+                              letterSpacing: 0.2,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],
@@ -163,17 +183,19 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                       content:
                           Text(isBookmarked ? 'Job saved!' : 'Job unsaved'),
                       duration: Duration(seconds: 1),
+                      backgroundColor: Color(0xFF666666),
                     ),
                   );
                 },
                 icon: Icon(
                   isBookmarked ? Icons.bookmark : Icons.bookmark_border,
-                  color: isBookmarked ? Color(0xFF4D61FC) : Colors.grey,
+                  color: isBookmarked ? Color(0xFFFF4444) : Color(0xFFCCCCCC),
+                  size: 24,
                 ),
               ),
             ],
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 18),
           // Tags
           Wrap(
             spacing: 8,
@@ -193,17 +215,19 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
 
   Widget _buildChip(String label) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 7),
       decoration: BoxDecoration(
-        color: Color(0xFFF5F5F5),
+        color: Color(0xFFF8F8F8),
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Color(0xFFE0E0E0), width: 0.5),
       ),
       child: Text(
         label,
         style: TextStyle(
-          fontSize: 13,
-          color: Colors.grey[700],
+          fontSize: 12,
+          color: Color(0xFF666666),
           fontWeight: FontWeight.w500,
+          letterSpacing: 0.2,
         ),
       ),
     );
@@ -217,18 +241,19 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
         children: [
           // Tab Selector (Description only - styled as selected)
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             decoration: BoxDecoration(
-              color: Colors.black,
+              color: Color(0xFF2D2D2D),
               borderRadius: BorderRadius.circular(25),
             ),
             child: Text(
               'Description',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: Colors.white,
+                letterSpacing: 0.3,
               ),
             ),
           ),
@@ -239,8 +264,9 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
             'About this role',
             style: TextStyle(
               fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFF2D2D2D),
+              letterSpacing: -0.5,
             ),
           ),
           SizedBox(height: 12),
@@ -248,8 +274,9 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
             'An Accountant plays a key role in managing and overseeing the financial aspects of an organization. This includes preparing financial reports, maintaining accurate financial records, conducting audits... ',
             style: TextStyle(
               fontSize: 14,
-              color: Colors.grey[700],
+              color: Color(0xFF666666),
               height: 1.6,
+              letterSpacing: 0.2,
             ),
           ),
           SizedBox(height: 8),
@@ -258,18 +285,38 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: Text('Full Description'),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  title: Text(
+                    'Full Description',
+                    style: TextStyle(
+                      color: Color(0xFF2D2D2D),
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                   content: SingleChildScrollView(
                     child: Text(
                       widget.job.description +
                           '\n\nAn Accountant plays a key role in managing and overseeing the financial aspects of an organization. This includes preparing financial reports, maintaining accurate financial records, conducting audits, and ensuring compliance with financial regulations and standards.',
-                      style: TextStyle(fontSize: 14, height: 1.6),
+                      style: TextStyle(
+                        fontSize: 14,
+                        height: 1.6,
+                        color: Color(0xFF666666),
+                        letterSpacing: 0.2,
+                      ),
                     ),
                   ),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
-                      child: Text('Close'),
+                      child: Text(
+                        'Close',
+                        style: TextStyle(
+                          color: Color(0xFFFF4444),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -279,8 +326,9 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
               'Read more',
               style: TextStyle(
                 fontSize: 14,
-                color: Color(0xFF4D61FC),
+                color: Color(0xFFFF4444),
                 fontWeight: FontWeight.w600,
+                letterSpacing: 0.2,
               ),
             ),
           ),
@@ -291,8 +339,9 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
             'Qualifications',
             style: TextStyle(
               fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFF2D2D2D),
+              letterSpacing: -0.5,
             ),
           ),
           SizedBox(height: 12),
@@ -314,7 +363,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
             width: 6,
             height: 6,
             decoration: BoxDecoration(
-              color: Colors.black,
+              color: Color(0xFFFF4444),
               shape: BoxShape.circle,
             ),
           ),
@@ -324,8 +373,9 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
               text,
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.grey[700],
-                height: 1.5,
+                color: Color(0xFF666666),
+                height: 1.6,
+                letterSpacing: 0.2,
               ),
             ),
           ),
@@ -351,6 +401,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
         top: false,
         child: SizedBox(
           width: double.infinity,
+          height: 52,
           child: ElevatedButton(
             onPressed: () {
               showDialog(
@@ -359,15 +410,30 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  title: Text('Apply for Job'),
+                  title: Text(
+                    'Apply for Job',
+                    style: TextStyle(
+                      color: Color(0xFF2D2D2D),
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                   content: Text(
-                      'Do you want to apply for ${widget.job.title} at ${widget.job.companyName}?'),
+                    'Do you want to apply for ${widget.job.title} at ${widget.job.companyName}?',
+                    style: TextStyle(
+                      color: Color(0xFF666666),
+                      fontSize: 14,
+                      letterSpacing: 0.2,
+                    ),
+                  ),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
                       child: Text(
                         'Cancel',
-                        style: TextStyle(color: Colors.grey[600]),
+                        style: TextStyle(
+                          color: Color(0xFF999999),
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                     ElevatedButton(
@@ -377,36 +443,43 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                           SnackBar(
                             content:
                                 Text('Application submitted successfully!'),
-                            backgroundColor: Colors.green,
+                            backgroundColor: Color(0xFF4CAF50),
                           ),
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF4D61FC),
+                        backgroundColor: Color(0xFFFF4444),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        elevation: 0,
+                      ),
+                      child: Text(
+                        'Apply',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                      child: Text('Apply'),
                     ),
                   ],
                 ),
               );
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFF4D61FC),
+              backgroundColor: Color(0xFFFF4444),
               foregroundColor: Colors.white,
-              padding: EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(14),
               ),
               elevation: 0,
             ),
             child: Text(
-              'Apply this job',
+              'Apply for this job',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
+                letterSpacing: 0.3,
               ),
             ),
           ),
